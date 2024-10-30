@@ -1,32 +1,20 @@
 version: 0.2
-
 phases:
   install:
-    runtime-versions:
-      python: 3.12
-      terraform:  1.7.5
     commands:
-      - echo Installing Terraform...
-      - curl -LO https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip
+      - echo "Installing Terraform"
+      - curl -O https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip
       - unzip terraform_1.0.0_linux_amd64.zip
       - mv terraform /usr/local/bin/
-      - terraform --version
-
   pre_build:
     commands:
-      - echo Logging in to AWS...
-      - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-      - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-      - aws configure set default.region $AWS_REGION
-
+      - echo "Initializing Terraform for environment $ENV"
+      - terraform init -backend-config="bucket=$S3_BUCKET" -backend-config="dynamodb_table=$DYNAMODB_TABLE" -backend-config="key=terraform/$ENV/terraform.tfstate"
   build:
     commands:
-      - echo "Initializing Terraform..."
-      - cd terraform/$ENVIRONMENT
-      - terraform init
-      - echo "Applying Terraform configuration..."
-      - terraform apply -var-file="$ENVIRONMENT.tfvars" -auto-approve
-
-artifacts:
-  files:
-    - terraform/$ENVIRONMENT/*.tfstate
+      - echo "Running Terraform Plan for $ENV environment"
+      - terraform plan -var-file=$ENV.tfvars -out=tfplan
+  post_build:
+    commands:
+      - echo "Applying Terraform changes for $ENV environment"
+      - terraform apply "tfplan"
