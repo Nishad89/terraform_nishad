@@ -1,0 +1,32 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.x
+      terraform: 1.x
+    commands:
+      - echo Installing Terraform...
+      - curl -LO https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip
+      - unzip terraform_1.0.0_linux_amd64.zip
+      - mv terraform /usr/local/bin/
+      - terraform --version
+
+  pre_build:
+    commands:
+      - echo Logging in to AWS...
+      - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+      - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+      - aws configure set default.region $AWS_REGION
+
+  build:
+    commands:
+      - echo "Initializing Terraform..."
+      - cd terraform/$ENVIRONMENT
+      - terraform init
+      - echo "Applying Terraform configuration..."
+      - terraform apply -var-file="$ENVIRONMENT.tfvars" -auto-approve
+
+artifacts:
+  files:
+    - terraform/$ENVIRONMENT/*.tfstate
