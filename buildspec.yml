@@ -8,8 +8,10 @@ phases:
       - mv terraform /usr/local/bin/
   pre_build:
     commands:
-      - echo "Initializing Terraform for environment $ENV"
-      - terraform workspace new dev
+     - echo "Initializing Terraform for environment $ENV"
+     - terraform init -backend-config= bucket=my-backet123-backend-config="key=terraform/$ENV/terraform.tfstate" 
+     - echo "Selecting or creating workspace for $ENV"
+     - terraform workspace select $ENV || terraform workspace new $ENV
   build:
     commands:
       - echo "Running Terraform Plan for $ENV environment"
