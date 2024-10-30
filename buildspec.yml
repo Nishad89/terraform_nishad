@@ -9,9 +9,6 @@ phases:
   pre_build:
     commands:
       - echo "Initializing Terraform for environment $ENV"
-      - terraform init -backend-config="bucket=$S3_BUCKET" -backend-config="key=terraform/$ENV/terraform.tfstate" 
-      - echo "Selecting or creating workspace for $ENV"
-      - terraform workspace select $ENV || terraform workspace new $ENV
   build:
     commands:
       - echo "Running Terraform Plan for $ENV environment"
