@@ -9,8 +9,8 @@ phases:
   pre_build:
     commands:
       - echo "Initializing Terraform for environment $ENV"
-      - terraform worksspace new dev
-      - terraform worksspace new qa
+      - terraform workspace new dev
+      - terraform workspace new qa
       
   build:
     commands:
