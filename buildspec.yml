@@ -9,7 +9,6 @@ phases:
   pre_build:
     commands:
       - echo "Initializing Terraform for environment $ENV"
-      - terraform init -backend-config="key=terraform/$ENV/terraform.tfstate"
   build:
     commands:
       - echo "Running Terraform Plan for $ENV environment"
