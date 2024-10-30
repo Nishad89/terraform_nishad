@@ -7,8 +7,9 @@ phases:
       - unzip terraform_1.0.0_linux_amd64.zip
       - mv terraform /usr/local/bin/
   pre_build:
+    commands:
       - echo "Initializing Terraform for environment $ENV"
-      - terraform init -backend-config="bucket=$S3_BUCKET" -backend-config="key=terraform/$ENV/terraform.tfstate"
+      - terraform init -backend-config="bucket=$S3_BUCKET" -backend-config="key=terraform/$ENV/terraform.tfstate" -backend-config="dynamodb_table=$DYNAMODB_TABLE"
       - echo "Selecting or creating workspace for $ENV"
       - terraform workspace select $ENV || terraform workspace new $ENV
   build:
