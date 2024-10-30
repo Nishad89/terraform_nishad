@@ -10,12 +10,10 @@ phases:
     commands:
       - echo "Initializing Terraform for environment $ENV"
       - terraform workspace new dev
-      - terraform workspace new qa
-      
   build:
     commands:
       - echo "Running Terraform Plan for $ENV environment"
-      - terraform plan -var-file=$ENV.tfvars -out=tfplan
+      - terraform plan -var-file=dev.tfvars -out=tfplan
   post_build:
     commands:
       - echo "Applying Terraform changes for $ENV environment"
