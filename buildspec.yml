@@ -3,8 +3,8 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.x
-      terraform: 1.x
+      python: 3.12
+      terraform:  1.7.5
     commands:
       - echo Installing Terraform...
       - curl -LO https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip
