@@ -15,6 +15,6 @@ terraform init
 terraform workspace select dev
 terraform destroy -var-file="dev.tfvars" -auto-approve
 terraform workspace select qa
-terraform destroy -var-file="qa.tfvars"
+terraform destroy -var-file="qa.tfvars" -auto-approve
 # destroy terraform
 # terraform destroy -auto-approve
