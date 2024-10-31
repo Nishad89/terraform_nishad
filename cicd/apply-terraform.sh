@@ -11,7 +11,7 @@ terraform init
 terraform workspace new dev
 terraform workspace select dev
 # # apply terraform
-terraform apply -auto-approve
+terraform apply -var-file="dev.tfvars" -auto-approve
 
 # destroy terraform
 # terraform destroy -auto-approve
