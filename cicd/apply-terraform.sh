@@ -8,10 +8,10 @@ cd ..
 
 # initialize terraform
 terraform init
-terraform workspace new dev
-terraform workspace seslect dev
+# terraform workspace new dev
+# terraform workspace seslect dev
 # # apply terraform
-terraform apply -var-file="dev" -auto-approve
+terraform apply -auto-approve
 
 # destroy terraform
 # terraform destroy -auto-approve
