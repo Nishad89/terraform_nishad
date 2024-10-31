@@ -7,7 +7,7 @@ set -eu
 cd .. 
 
 # initialize terraform
-# terraform init
+terraform init
 # terraform workspace select dev
 # terraform apply -var-file="dev.tfvars" -auto-approve
 # terraform workspace select qa
