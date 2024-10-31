@@ -8,8 +8,8 @@ cd ..
 
 # initialize terraform
 terraform init
-# terraform workspace new dev
-# terraform workspace seslect dev
+terraform workspace new dev
+terraform workspace select dev
 # # apply terraform
 terraform apply -auto-approve
 
