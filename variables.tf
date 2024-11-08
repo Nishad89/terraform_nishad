@@ -17,6 +17,11 @@ variable "sg_name" {
 }
 
 variable "security_groups" {
-  description = "The name of the S3 bucket"
+  description = "The name of the Sg bucket"
+  type        = list(string)
+}
+
+variable "vpc_id" {
+  description = "The name of the sg"
   type        = string
 }
