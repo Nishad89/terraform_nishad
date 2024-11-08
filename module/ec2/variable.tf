@@ -8,4 +8,7 @@ variable "instance_type" {
   type        = string
 }
 
-
+variable "security_groups" {
+  description = "The name of the sg"
+  type        = string
+}

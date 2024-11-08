@@ -1,3 +1,4 @@
 ami            = "ami-0866a3c8686eaeeba"
 instance_type  = "t2.micro"
 s3_bucket_name = "teraform-bucket-4321"
+sg_name =  "test-sg"

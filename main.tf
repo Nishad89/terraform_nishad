@@ -1,6 +1,9 @@
 
 
-
+module "aws_security_group" {
+  source = "./module/sg"
+  sg_name = var.sg_name
+}
 
 module "ec2_instance" {
   source        = "./module/ec2"
