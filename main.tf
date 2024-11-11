@@ -32,22 +32,25 @@ resource "aws_security_group" "jenkins_sg" {
 
 # EC2 Instance for Jenkins
 resource "aws_instance" "jenkins_server" {
-  ami           = "ami-063d43db0594b521b"
-  instance_type = "t2.micro"
+  ami           = "ami-0866a3c8686eaeeba"
+  instance_type = "t3.medium"
   security_groups = [aws_security_group.jenkins_sg.name]
 
   # Script to install Jenkins
   user_data = <<-EOF
               #!/bin/bash
-              yum update -y
-              amazon-linux-extras install java-openjdk11 -y
-              wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-              rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
-              yum install jenkins -y
-              systemctl start jenkins
-              systemctl enable jenkins
+              sudo apt update
+              sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+              https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+              echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+              https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+              /etc/apt/sources.list.d/jenkins.list > /dev/null
+              sudo apt-get update
+              sudo apt-get install fontconfig openjdk-17-jre
+              sudo apt-get install jenkins
+              sudo systemctl start jenkins
+              sudo systemctl enable jenkins
               EOF
-
   tags = {
     Name = "Jenkins-Server"
   }
