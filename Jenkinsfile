@@ -34,9 +34,9 @@ pipeline {
                 script {
                     // Select or create the workspace for the selected environment
                     sh "terraform workspace select ${params.ENVIRONMENT} || terraform workspace new ${params.ENVIRONMENT}"
-
                     // Initialize Terraform with the appropriate backend
-                    sh "terraform init -migrate-state"
+                    echo "Initializing Terraform with -reconfigure"
+                    sh "terraform init -reconfigure"
                 }
             }
         }
