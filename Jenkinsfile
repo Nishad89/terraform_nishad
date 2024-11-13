@@ -9,16 +9,13 @@ pipeline {
 
     }
    
-   agent  any
-    stages {
-        stage('checkout') {
+   stages {
+        stage('Checkout') {
             steps {
-                        {
-                            git branch: 'iac', url: "https://github.com/Nishad89/terraform_nishad.git"
-                        }
-                    }
-                }
+                // Clone the GitHub repository
+                git branch: 'iac', url: "https://github.com/Nishad89/terraform_nishad.git"
             }
+        }
         stage('Show Environment') {
             steps {
                 script {
