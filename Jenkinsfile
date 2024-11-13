@@ -24,15 +24,23 @@ pipeline {
             }
         }
 
-        stage('Init') {
+        stage('workspace') {
             steps {
                 script {
                     // Select or create the workspace for the selected environment
                     sh "terraform workspace select ${params.ENVIRONMENT} || terraform workspace new ${params.ENVIRONMENT}"
                     // Initialize Terraform with the appropriate backend
-                    sh "terraform init"
                 }
             }
+        }
+
+        stage (init)
+        {
+            steps {
+                script {
+                    sh "terraform init"
+                }
+            } 
         }
         stage('Plan') {
             steps {
