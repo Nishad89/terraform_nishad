@@ -38,7 +38,7 @@ pipeline {
             steps {
                 script {
                     // Run terraform plan using the environment-specific variables
-                    sh "terraform plan -var-file=environments/${params.ENVIRONMENT}/workspace.tfvars"
+                    sh "terraform plan -var-file=environments/${params.ENVIRONMENT}.tfvars"
                 }
             }
         }
