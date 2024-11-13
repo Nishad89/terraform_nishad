@@ -36,7 +36,7 @@ pipeline {
                     sh "terraform workspace select ${params.ENVIRONMENT} || terraform workspace new ${params.ENVIRONMENT}"
 
                     // Initialize Terraform with the appropriate backend
-                    sh "terraform init -reconfigure -backend-config='key=terraform/${params.ENVIRONMENT}/terraform.tfstate'"
+                    sh "terraform init -migrate-state"
                 }
             }
         }
