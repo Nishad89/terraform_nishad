@@ -29,7 +29,7 @@ pipeline {
                 script {
                     // Select or create the workspace for the selected environment
                     sh "terraform workspace select ${params.ENVIRONMENT} || terraform workspace new ${params.ENVIRONMENT}"
-                    sh 'terraform init'
+                    sh ('terraform init')
                     // Initialize Terraform with the appropriate backend
                 }
             }
