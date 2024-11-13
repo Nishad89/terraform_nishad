@@ -13,8 +13,6 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-                 script{
-                        dir("terraform")
                         {
                             git branch: 'iac', url: "https://github.com/Nishad89/terraform_nishad.git"
                         }
