@@ -34,38 +34,5 @@ pipeline {
             }
         }
 
-        stage (init)
-        {
-            steps {
-                script {
-                    sh "terraform init"
-                }
-            } 
-        }
-        stage('Plan') {
-            steps {
-                script {
-                    // Run terraform plan using the environment-specific variables
-                    sh "terraform plan -var-file=environments/${params.ENVIRONMENT}/workspace.tfvars"
-                }
-            }
-        }
-        stage('Approval') {
-            steps {
-                script {
-                    // Manual approval stage
-                    input message: "Approve deployment to ${params.ENVIRONMENT}?", ok: 'Approve'
-                }
-            }
-        }
-
-        stage('Apply') {
-            steps {
-                script {
-                    // Apply the Terraform configuration
-                    sh "terraform apply -var-file=environments/${params.ENVIRONMENT}/workspace.tfvars -auto-approve"
-                }
-            }
-        }
-    }
+   }
 }
