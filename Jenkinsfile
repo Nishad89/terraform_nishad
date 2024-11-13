@@ -1,8 +1,5 @@
 pipeline {
 
-    parameters {
-        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
-    } 
     parameters{
        choice(name: 'ENVIRONMENT', choices: ['dev', 'qa'], description: 'Select environment to deploy')
     }
@@ -52,21 +49,15 @@ pipeline {
             }
         }
         stage('Approval') {
-           when {
-               not {
-                   equals expected: true, actual: params.autoApprove
-               }
-           }
+            steps {
+                script {
+                    // Manual approval stage
+                    input message: "Approve deployment to ${params.ENVIRONMENT}?", ok: 'Approve'
+                }
+            }
+        }
 
-           steps {
-               script {
-                    input message: "Do you want to apply the plan?",
-                    parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-               }
-           }
-       }
-
-        sstage('Apply') {
+        stage('Apply') {
             steps {
                 script {
                     // Apply the Terraform configuration
