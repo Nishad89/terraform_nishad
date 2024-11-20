@@ -30,7 +30,7 @@ pipeline {
         stage('Apply_Dev') {
             steps {
                 script {
-                    ssh "terraform apply -var-file=environments/dev.tfvars -auto-approve"
+                    sh "terraform apply -var-file=environments/dev.tfvars -auto-approve"
                 }
             }
         }
@@ -53,7 +53,7 @@ pipeline {
         stage('QA') {
             steps {
                 script {
-                    ssh "terraform apply -var-file=environments/qa.tfvars -auto-approve"
+                    sh "terraform apply -var-file=environments/qa.tfvars -auto-approve"
                 }
             }
         }
