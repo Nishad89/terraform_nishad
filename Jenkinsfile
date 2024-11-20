@@ -19,7 +19,7 @@ pipeline {
         stage('Show Environment') {
             steps {
                 script {
-                    echo "Deploying to environment: ${params.ENVIRONMENT}"
+                    echo "Deploying to environment: dev "
                 }
             }
         }
@@ -51,7 +51,7 @@ pipeline {
             }
         }
 
-        stage('Apply') {
+        stage('Dev') {
             steps {
                 script {
                     // Apply the Terraform configuration
@@ -60,5 +60,53 @@ pipeline {
             }
         }
     }
-}
+
+//QA
+      stage('Show Environment') {
+            steps {
+                script {
+                    echo "Deploying to environment: QA "
+                }
+            }
+        }
+
+        stage('workspace') {
+            steps {
+                script {
+                    // Select or create the workspace for the selected environment
+                    sh "terraform workspace select qa || terraform workspace new qa"
+                    sh 'terraform init'
+                    // Initialize Terraform with the appropriate backend
+                }
+            }
+        }
+           stage('Plan') {
+            steps {
+                script {
+                    // Run terraform plan using the environment-specific variables
+                    sh "terraform plan -var-file=environments/qa.tfvars"
+                }
+            }
+        }
+        stage('Approval') {
+            steps {
+                script {
+                    // Manual approval stage
+                    input message: "Approve deployment to qa?", ok: 'Approve'
+                }
+            }
+        }
+
+        stage('QA') {
+            steps {
+                script {
+                    // Apply the Terraform configuration
+                    sh "terraform apply -var-file=environments/qa.tfvars -auto-approve"
+                }
+            }
+        }
+    }
+
+
+
 
