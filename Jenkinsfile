@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     sh "terraform workspace select dev || terraform workspace new dev"
-                    sh 'terraform init -backend-config=backend.tf'
+                    sh 'terraform init -backend-config=backend.tf -reconfigure'
                 }
             }
         }
