@@ -1,8 +1,8 @@
 pipeline {
     agent any
-    parameters{
-       choice(name: 'ENVIRONMENT', choices: ['dev', 'qa'], description: 'Select environment to deploy')
-    }
+    // parameters{
+    //    choice(name: 'ENVIRONMENT', choices: ['dev', 'qa'], description: 'Select environment to deploy')
+    // }
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                     // Select or create the workspace for the selected environment
-                    sh "terraform workspace select ${params.ENVIRONMENT} || terraform workspace new ${params.ENVIRONMENT}"
+                    sh "terraform workspace select dev || terraform workspace new dev"
                     sh 'terraform init'
                     // Initialize Terraform with the appropriate backend
                 }
@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                     // Manual approval stage
-                    input message: "Approve deployment to ${params.ENVIRONMENT}?", ok: 'Approve'
+                    input message: "Approve deployment to dev?", ok: 'Approve'
                 }
             }
         }
@@ -55,7 +55,7 @@ pipeline {
             steps {
                 script {
                     // Apply the Terraform configuration
-                    sh "terraform apply -var-file=environments/${params.ENVIRONMENT}/workspace.tfvars -auto-approve"
+                    sh "terraform apply -var-file=environments/dev.tfvars -auto-approve"
                 }
             }
         }
