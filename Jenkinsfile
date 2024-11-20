@@ -20,6 +20,13 @@ pipeline {
                 }
             }
         }
+        stage(terraform_Plan){
+            steps{
+                script{
+                sh 'terraform plan'
+                }
+            }
+        }
         stage('Approval_Dev') {
             steps {
                 script {
@@ -39,7 +46,7 @@ pipeline {
             steps {
                 script {
                     sh "terraform workspace select QA || terraform workspace new QA"
-                    sh 'terraform init -reconfigure'
+                    sh 'terraform init'
                 }
             }
         }  
