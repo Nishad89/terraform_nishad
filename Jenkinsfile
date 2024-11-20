@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     sh "terraform workspace select dev || terraform workspace new dev"
-                    sh 'terraform init -reconfigure'
+                    sh 'terraform init -backend-config=backend.tf'
                 }
             }
         }
@@ -50,7 +50,7 @@ pipeline {
                 }
             }
         }
-        stage('QA') {
+        stage('Apply_QA') {
             steps {
                 script {
                     sh "terraform apply -var-file=environments/qa.tfvars -auto-approve"
