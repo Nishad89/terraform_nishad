@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     sh "terraform workspace select dev || terraform workspace new dev"
-                    sh 'terraform init -migrate-state'
+                    sh 'terraform init -reconfigure'
                 }
             }
         }
@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     sh "terraform workspace select QA || terraform workspace new QA"
-                    sh 'terraform init -migrate-state'
+                    sh 'terraform init -reconfigure'
                 }
             }
         }  
