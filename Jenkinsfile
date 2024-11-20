@@ -44,7 +44,7 @@ pipeline {
             }
         }
 
-        stage('appy') {
+        stage('apply') {
             steps {
                 script {
                     // Apply the Terraform configuration
