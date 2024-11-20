@@ -12,7 +12,7 @@ pipeline {
                 git branch: 'iac', url: "https://github.com/Nishad89/terraform_nishad.git"
             }
         }
-        stage('workspace') {
+        stage('workspace_Dev') {
             steps {
                 script {
                     sh "terraform workspace select dev || terraform workspace new dev"
@@ -20,14 +20,14 @@ pipeline {
                 }
             }
         }
-        stage('Approval') {
+        stage('Approval_Dev') {
             steps {
                 script {
                     input message: "Approve deployment to dev", ok: 'Approve'
                 }
             }
         }
-        stage('Dev') {
+        stage('Apply_Dev') {
             steps {
                 script {
                     ssh "terraform apply -var-file=environments/dev.tfvars -auto-approve"
@@ -35,7 +35,7 @@ pipeline {
             }
         }
         //qa
-        stage('workspace') {
+        stage('workspace_QA') {
             steps {
                 script {
                     sh "terraform workspace select QA || terraform workspace new QA"
@@ -43,7 +43,7 @@ pipeline {
                 }
             }
         }  
-        stage('Approval') {
+        stage('Approval_QA') {
             steps {
                 script {
                     input message: "Approve deployment to QA", ok: 'Approve'
