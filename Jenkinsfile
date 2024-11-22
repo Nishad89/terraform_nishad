@@ -20,8 +20,8 @@ pipeline {
         stage('workspace_Dev') {
             steps {
                 //script {
-                    sh  'terraform workspace select dev || terraform workspace new dev'
-                    sh sh 'terraform init -reconfigure'
+                    sh 'terraform workspace select dev || terraform workspace new dev'
+                    sh 'terraform init -reconfigure'
                 //     sh '''
                 //     terraform init \
                 //     -backend-config="bucket=${BACKEND_BUCKET}" \
