@@ -3,27 +3,31 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        BACKEND_BUCKET = 'my-backet123'
+        BACKEND_KEY = 'terraform/terraform.tfstate'
+        TF_VAR_region = 'us-east-1'
 
     }
    
    stages {
         stage('Checkout') {
             steps {
-                git branch: 'iac', url: "https://github.com/Nishad89/terraform_nishad.git"
-            }
-        }
+                
+                git branch: 'jenkins-backend', url: "https://github.com/Nishad89/terraform_nishad.git"
+                }
+             }
+    
         stage('workspace_Dev') {
             steps {
                 script {
-                    sh "terraform workspace select dev || terraform workspace new dev"
-                    sh 'terraform init'
-                }
-            }
-        }
-        stage(terraform_Plan){
-            steps{
-                script{
-                sh 'terraform plan -var-file=environments/dev.tfvars'
+                    sh  'terraform workspace select dev || terraform workspace new dev'
+                     sh '''
+                terraform init \
+                -backend-config="bucket=${BACKEND_BUCKET}" \
+                -backend-config="key=${BACKEND_KEY}" \
+                -backend-config="region=${TF_VAR_region}" \
+                -backend-config="encrypt=true"
+                '''
                 }
             }
         }
