@@ -21,14 +21,15 @@ pipeline {
             steps {
                 //script {
                     sh  'terraform workspace select dev || terraform workspace new dev'
-                    sh '''
-                    terraform init \
-                    -backend-config="bucket=${BACKEND_BUCKET}" \
-                    -backend-config="key=${BACKEND_KEY}" \
-                    -backend-config="region=${aws_region}" \
-                    -backend-config="encrypt=true"
-                    '''
-                //}
+                    sh sh 'terraform init -reconfigure'
+                //     sh '''
+                //     terraform init \
+                //     -backend-config="bucket=${BACKEND_BUCKET}" \
+                //     -backend-config="key=${BACKEND_KEY}" \
+                //     -backend-config="region=${aws_region}" \
+                //     -backend-config="encrypt=true"
+                //     '''
+                // //}
             }
         }
         stage('Approval_Dev') {
