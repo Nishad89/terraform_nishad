@@ -21,10 +21,10 @@ pipeline {
                     //sh 'terraform init -reconfigure'
                     sh '''
                     terraform init \
-                    -backend-config="bucket=${env.BACKEND_BUCKET}" \
-                    -backend-config="key=${env.BACKEND_KEY}" \
-                    -backend-config="region=${env.AWS_REGION}" \
-                    '''
+                        -backend-config="bucket=my-backet123" \
+                        -backend-config="key=terraform/terraform.tfstate" \
+                        -backend-config="region=us-east-1" \
+                        '''
                 }
             }
         }
