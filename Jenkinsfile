@@ -16,17 +16,16 @@ pipeline {
     
         stage('workspace_Dev') {
             steps {
-                //script {
+                script {
                     sh 'terraform workspace select dev || terraform workspace new dev'
-                    sh 'terraform init -reconfigure'
-                //     sh '''
-                //     terraform init \
-                //     -backend-config="bucket=${BACKEND_BUCKET}" \
-                //     -backend-config="key=${BACKEND_KEY}" \
-                //     -backend-config="region=${aws_region}" \
-                //     -backend-config="encrypt=true"
-                //     '''
-                // //}
+                    //sh 'terraform init -reconfigure'
+                    sh '''
+                    terraform init \
+                    -backend-config="bucket=${env.BACKEND_BUCKET}" \
+                    -backend-config="key=${env.BACKEND_KEY}" \
+                    -backend-config="region=${env.AWS_REGION}" \
+                    '''
+                }
             }
         }
         stage('Approval_Dev') {
