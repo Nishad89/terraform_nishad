@@ -19,7 +19,7 @@ pipeline {
     
         stage('workspace_Dev') {
             steps {
-                script {
+                //script {
                     sh  'terraform workspace select dev || terraform workspace new dev'
                     sh '''
                     terraform init \
@@ -28,7 +28,7 @@ pipeline {
                     -backend-config="region=${aws_region}" \
                     -backend-config="encrypt=true"
                     '''
-                }
+                //}
             }
         }
         stage('Approval_Dev') {
