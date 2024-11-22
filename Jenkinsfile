@@ -17,7 +17,7 @@ pipeline {
         stage('workspace_Dev') {
             steps {
                 script {
-                    sh 'terraform init -migrate-state'
+                    sh 'terraform init'
                     sh 'terraform workspace select dev || terraform workspace new dev'
                     //sh 'terraform init -reconfigure'
                     sh '''
