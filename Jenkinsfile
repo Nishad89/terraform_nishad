@@ -17,10 +17,11 @@ pipeline {
         stage('workspace_Dev') {
             steps {
                 script {
+                    sh 'terraform init'
                     sh 'terraform workspace select dev || terraform workspace new dev'
                     //sh 'terraform init -reconfigure'
                     sh '''
-                    terraform init -reconfigure \
+                    terraform init \
                         -backend-config="bucket=my-backet123" \
                         -backend-config="key=terraform/terraform.tfstate" \
                         -backend-config="region=us-east-1" \
