@@ -20,7 +20,7 @@ pipeline {
                     sh 'terraform workspace select dev || terraform workspace new dev'
                     //sh 'terraform init -reconfigure'
                     sh '''
-                    terraform init \
+                    terraform init -reconfigure \
                         -backend-config="bucket=my-backet123" \
                         -backend-config="key=terraform/terraform.tfstate" \
                         -backend-config="region=us-east-1" \
