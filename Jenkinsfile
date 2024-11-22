@@ -3,9 +3,6 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        BACKEND_BUCKET = 'my-backet123'
-        BACKEND_KEY = 'terraform/terraform.tfstate'
-        aws_region = 'us-east-1'
 
     }
    
@@ -21,7 +18,7 @@ pipeline {
             steps {
                 //script {
                     sh 'terraform workspace select dev || terraform workspace new dev'
-                    sh 'terraform init'
+                    sh 'terraform init -reconfigure'
                 //     sh '''
                 //     terraform init \
                 //     -backend-config="bucket=${BACKEND_BUCKET}" \
