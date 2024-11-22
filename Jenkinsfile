@@ -5,7 +5,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         BACKEND_BUCKET = 'my-backet123'
         BACKEND_KEY = 'terraform/terraform.tfstate'
-        TF_VAR_region = 'us-east-1'
+        aws_region = 'us-east-1'
 
     }
    
@@ -21,13 +21,13 @@ pipeline {
             steps {
                 script {
                     sh  'terraform workspace select dev || terraform workspace new dev'
-                     sh '''
-                terraform init \
-                -backend-config="bucket=${BACKEND_BUCKET}" \
-                -backend-config="key=${BACKEND_KEY}" \
-                -backend-config="region=${TF_VAR_region}" \
-                -backend-config="encrypt=true"
-                '''
+                    sh '''
+                    terraform init \
+                    -backend-config="bucket=${BACKEND_BUCKET}" \
+                    -backend-config="key=${BACKEND_KEY}" \
+                    -backend-config="region=${aws_region}" \
+                    -backend-config="encrypt=true"
+                    '''
                 }
             }
         }
