@@ -7,8 +7,9 @@ data "aws_vpc" "existing_vpc" {
 # Get the existing subnets for the EKS cluster (you can use public or private subnets)
 data "aws_subnets" "eks_subnets" {
   filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.existing_vpc.id]
+    name = "availabilityZone"
+    values = ["us-east-1a", "us-east-1b"]
+    //values = [data.aws_vpc.existing_vpc.id]
   }
 }
 
@@ -50,7 +51,11 @@ resource "aws_eks_cluster" "eks_cluster" {
   role_arn = aws_iam_role.eks_role.arn
 
   vpc_config {
-    subnet_ids = data.aws_subnets.eks_subnets.ids
+    subnet_ids = [
+      data.aws_subnets.eks_subnets.ids[0],  # Example: first subnet in supported AZ
+      data.aws_subnets.eks_subnets.ids[1]   # Example: second subnet in supported AZ
+    ]
+    //subnet_ids = data.aws_subnets.eks_subnets.ids
     security_group_ids = [aws_security_group.eks_sg.id]
   }
 
