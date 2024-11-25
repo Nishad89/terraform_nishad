@@ -5,8 +5,11 @@ data "aws_vpc" "existing_vpc" {
 }
 
 # Get the existing subnets for the EKS cluster (you can use public or private subnets)
-data "aws_subnet_ids" "eks_subnets" {
-  vpc_id = data.aws_vpc.existing_vpc.id
+data "aws_subnets" "eks_subnets" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.existing_vpc.id]
+  }
 }
 
 # Create an IAM role for the EKS Cluster
