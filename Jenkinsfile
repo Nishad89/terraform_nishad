@@ -39,7 +39,8 @@ pipeline {
         stage('Apply_Dev') {
             steps {
                 script {
-                    sh "terraform apply -var-file=environments/dev.tfvars -auto-approve"
+                    // sh "terraform apply -var-file=environments/dev.tfvars -auto-approve"
+                    sh "terraform destroy -var-file=environments/dev.tfvars -auto-approve"
                 }
             }
         }
@@ -67,7 +68,8 @@ pipeline {
         stage('Apply_QA') {
             steps {
                 script {
-                    sh "terraform apply -var-file=environments/qa.tfvars -auto-approve"
+                    // sh "terraform apply -var-file=environments/qa.tfvars -auto-approve"
+                    sh "terraform destroy -var-file=environments/qa.tfvars -auto-approve"
                 }
             }
         }
