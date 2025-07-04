@@ -54,4 +54,18 @@ jobs:
        script: |
          aws s3 cp s3://java-sample-github-action/demo-0.0.1-SNAPSHOT.jar /home/${{ secrets.EC2_USER }}/java-app/
          pkill -f 'java -jar' || true
-         nohup java -jar /home/${{ secrets.EC2_USER }}/demo-0.0.1-SNAPSHOT.jar > output.log 2>&1 &
+
+    - name: Start app in background
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_KEY }}
+        script: |
+            echo "Starting app..."
+            cd /home/ec2-user/java-app
+            nohup java -jar demo-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+            echo "App started in background."
+
+         
+    # nohup java -jar /home/${{ secrets.EC2_USER }}/demo-0.0.1-SNAPSHOT.jar > output.log 2>&1 &
