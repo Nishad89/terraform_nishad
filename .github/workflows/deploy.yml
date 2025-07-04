@@ -23,13 +23,14 @@ jobs:
     - name: Build with Maven
       run: mvn clean package
       
-    - name: Upload jar to S3
-      uses: aws-actions/s3-sync@v1
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
       with:
-        bucket: java-sample-github-action
-        region: us-east-1
-        source-dir: target/
-        destination: /
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+    - name: Upload JAR to S3
+      run: aws s3 cp target/demo.jar s3://java-sample-github-action/     
 
 
     
