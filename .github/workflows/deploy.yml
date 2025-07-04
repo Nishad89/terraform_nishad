@@ -53,7 +53,7 @@ jobs:
        key: ${{ secrets.EC2_KEY }}
        script: |
          aws s3 cp s3://java-sample-github-action/demo-0.0.1-SNAPSHOT.jar /home/${{ secrets.EC2_USER }}/java-app/
-         pkill -f 'java -jar' || true
+         
 
     - name: Start app in background
       uses: appleboy/ssh-action@v1.0.0
