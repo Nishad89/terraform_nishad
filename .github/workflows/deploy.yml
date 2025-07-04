@@ -3,7 +3,7 @@ name: Deploy Java App to EC2
 on:
   push:
     branches:
-      - github_action
+      - main
       
 
 jobs:
