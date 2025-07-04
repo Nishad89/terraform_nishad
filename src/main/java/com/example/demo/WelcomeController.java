@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class WelcomeController {
   @GetMapping("/")
   public String welcome() {
-    return "Welcome to the Java App on EC2!";
+    return "Welcome to the new world!";
   }
 }
