@@ -30,8 +30,19 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
     - name: Upload JAR to S3
-      run: aws s3 cp target/demo-0.0.1-SNAPSHOT.jar s3://java-sample-github-action/     
+      run: aws s3 cp target/demo-0.0.1-SNAPSHOT.jar s3://java-sample-github-action/ 
 
+    # - name: Deploy and run jar via SSM
+    #   run: |
+    #      aws ssm send-command \
+    #      --document-name "AWS-RunShellScript" \
+    #      --instance-ids ${{ secrets.INSTANCE_ID }} \
+    #      --parameters commands=["aws s3 cp s3://java-sample-github-action/demo-0.0.1-SNAPSHOT.jar /home/ec2-user/java-app/", "pkill -f 'java -jar' || true", "nohup java -jar /home/ec2-user/java-app/demo-0.0.1-SNAPSHOT.jar > output.log 2>&1 &"] \
+    #      --region us-east-1
+ 
+    #   env:
+    #    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     
     - name: Download from S3 and run
