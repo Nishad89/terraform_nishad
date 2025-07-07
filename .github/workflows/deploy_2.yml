@@ -39,11 +39,11 @@ jobs:
 
     - name: Create remote app directory on EC2
       run: |
-        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@54.164.98.57 "mkdir -p /home/ec2-user/app" 
+        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@107.21.148.165 "mkdir -p /home/ec2-user/app" 
         scp -i private_key.pem -o StrictHostKeyChecking=no target/*.jar ec2-user@54.164.98.57:/home/ec2-user/app/
 
     - name: SSH and Start App
       run: |
-        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@54.164.98.57 \
+        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@107.21.148.165 \
         "pkill -f 'java -jar' || true && nohup java -jar /home/ec2-user/app/*.jar > app.log 2>&1 &"
          
