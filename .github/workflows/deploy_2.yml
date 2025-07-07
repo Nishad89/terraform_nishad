@@ -36,6 +36,16 @@ jobs:
       run: |
         echo "${{ secrets.EC2_KEY }}" > private_key.pem
         chmod 600 private_key.pem
+    
+    - name: Install Java 17 on EC2
+      run: |
+       ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@107.21.148.165 << 'EOF'
+        sudo yum update -y
+        sudo amazon-linux-extras enable java-openjdk11
+        sudo yum clean metadata
+        sudo yum install java-17-amazon-corretto -y
+        java -version
+        EOF
 
     - name: Create remote directory
       run: |
@@ -43,7 +53,7 @@ jobs:
 
     - name: copy jar
       run: |
-        scp -i private_key.pem -o StrictHostKeyChecking=no target/demo2-0.0.1-SNAPSHOT.jar ec2-user@107.21.148.165:/home/ec2-user/app/
+        scp -i private_key.pem -o StrictHostKeyChecking=no target/*.jar ec2-user@107.21.148.165:/home/ec2-user/app/
 
 
     - name: SSH and Start App
