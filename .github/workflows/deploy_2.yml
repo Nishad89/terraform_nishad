@@ -57,6 +57,6 @@ jobs:
     - name: SSH and Start App
       run: |
         ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@107.21.148.165 
-        Cd  /home/ec2-user/app/
+        cd /home/ec2-user/app/
         java -jar demo2-0.0.1-SNAPSHOT.jar
         nohup java -jar your-app.jar > app.log 2>&1 &
