@@ -41,11 +41,8 @@ jobs:
       run: |
        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@107.21.148.165 << 'EOF'
         sudo yum update -y
-        sudo amazon-linux-extras enable java-openjdk11
-        sudo yum clean metadata
         sudo yum install java-17-amazon-corretto -y
         java -version
-        EOF
 
     - name: Create remote directory
       run: |
