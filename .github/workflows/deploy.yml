@@ -2,7 +2,9 @@ name: Deploy Java App to EC2
 
 on:
   push:
-    branches: [java-sample-2,qa]
+    branches: 
+     - main
+     - java-sample-2
       
 
 jobs:
