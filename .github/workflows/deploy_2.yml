@@ -44,5 +44,6 @@ jobs:
 
     - name: SSH and Start App
       run: |
-        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@54.164.98.57 && nohup java -jar /home/ec2-user/app/*.jar > app.log 2>&1 &"
+        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@54.164.98.57 \
+        "pkill -f 'java -jar' || true && nohup java -jar /home/ec2-user/app/*.jar > app.log 2>&1 &"
          
