@@ -29,18 +29,21 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-    - name: Upload JAR to S3
-      run: aws s3 cp target/demo2-0.0.1-SNAPSHOT.jar s3://java-sample-github-action/ 
+    # - name: Upload JAR to S3
+    #   run: aws s3 cp target/demo2-0.0.1-SNAPSHOT.jar s3://java-sample-github-action/ 
     
     - name: Copy .jar to EC2 (SCP)
       run: |
         echo "${{ secrets.EC2_KEY }}" > private_key.pem
         chmod 600 private_key.pem
 
-    - name: Create remote app directory on EC2
+    - name: Create remote directory
       run: |
         ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@107.21.148.165 "mkdir -p /home/ec2-user/app" 
-        scp -i private_key.pem -o StrictHostKeyChecking=no target/*.jar ec2-user@54.164.98.57:/home/ec2-user/app/
+
+    - name: copy jar
+      run: |
+        scp -i private_key.pem -o StrictHostKeyChecking=no target/*.jar ec2-user@107.21.148.165:/home/ec2-user/app/
 
     - name: SSH and Start App
       run: |
