@@ -39,9 +39,10 @@ jobs:
     
     - name: Install Java 17 on EC2
       run: |
-       ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@107.21.148.165 << 'EOF'
-        sudo yum update -y
-        sudo yum install java-17-amazon-corretto -y
+        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@107.21.148.165 << 'EOF'
+        sudo rpm --import https://yum.corretto.aws/corretto.key
+        sudo curl -Lo /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo
+        sudo yum install -y java-17-amazon-corretto
         java -version
 
     - name: Create remote directory
