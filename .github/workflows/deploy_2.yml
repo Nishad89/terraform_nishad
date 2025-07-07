@@ -45,6 +45,7 @@ jobs:
       run: |
         scp -i private_key.pem -o StrictHostKeyChecking=no target/*.jar ec2-user@107.21.148.165:/home/ec2-user/app/
 
+
     - name: SSH and Start App
       run: |
         ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@107.21.148.165 \
