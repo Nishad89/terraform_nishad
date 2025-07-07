@@ -14,10 +14,10 @@
   </parent>
 
   <groupId>com.example</groupId>
-  <artifactId>demo</artifactId>
+  <artifactId>demo2</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>demo</name>
-  <description>Demo Java Welcome App</description>
+  <name>demo2</name>
+  <description>Demo2 Java Welcome App</description>
   <packaging>jar</packaging>
 
   <properties>
