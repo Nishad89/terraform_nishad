@@ -41,7 +41,6 @@ jobs:
         script: |
             echo "stop and remove..."
             cd /home/ec2-user/java-app
-            pkill -f 'java -jar' > /dev/null 2>&1 || true
             rm -f demo-0.0.1-SNAPSHOT.jar app.log nohup.out
     
     - name: Download from S3 and run
