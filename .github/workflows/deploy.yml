@@ -66,7 +66,7 @@ jobs:
         script: |
             echo "Starting app..."
             cd /home/ec2-user/java-app
-            pkill -f 'java -jar' > /dev/null 2>&1 || true
+            nohup java -jar demo-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
             
 
          
