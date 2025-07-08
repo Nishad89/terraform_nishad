@@ -64,7 +64,9 @@ jobs:
         script: |
             echo "Starting app..."
             cd /home/ec2-user/java-app
-            pkill -f 'java -jar' || true  
+            if pgrep -f 'java -jar' > /dev/null; then
+            pkill -f 'java -jar' > /dev/null 2>&1 || true
+            fi
 
     - name: start app in background
       uses: appleboy/ssh-action@v1.0.0
