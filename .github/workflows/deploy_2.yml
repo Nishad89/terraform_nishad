@@ -39,7 +39,7 @@ jobs:
     
     - name: Install Java 17 on EC2
       run: |
-        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@107.21.148.165 << 'EOF'
+        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@98.84.186.40 << 'EOF'
         sudo rpm --import https://yum.corretto.aws/corretto.key
         sudo curl -Lo /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo
         sudo yum install -y java-17-amazon-corretto
@@ -47,16 +47,16 @@ jobs:
 
     - name: Create remote directory
       run: |
-        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@172.31.18.189 "mkdir -p /home/ec2-user/app" 
+        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@98.84.186.40 "mkdir -p /home/ec2-user/app" 
 
     - name: copy jar
       run: |
-        scp -i private_key.pem -o StrictHostKeyChecking=no target/*.jar ec2-user@172.31.18.18:/home/ec2-user/app/
+        scp -i private_key.pem -o StrictHostKeyChecking=no target/*.jar ec2-user@98.84.186.40:/home/ec2-user/app/
 
 
     - name: SSH and Start App
       run: |
-        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@172.31.18.18 <<EOF
+        ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@98.84.186.40 <<EOF
         cd /home/ec2-user/app/
         pkill -f 'java -jar' || true
         nohup java -jar demo2-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
