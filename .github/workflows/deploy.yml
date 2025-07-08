@@ -67,6 +67,7 @@ jobs:
             if pgrep -f 'java -jar' > /dev/null; then
             pkill -f 'java -jar' > /dev/null 2>&1 || true
             fi
+            ) > /dev/null 2>&1
 
     - name: start app in background
       uses: appleboy/ssh-action@v1.0.0
