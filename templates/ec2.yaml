@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: EC2 with SG and VPC
+
+Parameters:
+  EnvName:
+    Type: String
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+  SubnetId:
+    Type: AWS::EC2::Subnet::Id
+  SecurityGroupId:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Existing Security Group ID
+  InstanceType:
+    Type: String
+  ImageId:
+    Type: String
+
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      ImageId: !Ref ImageId # Replace with your region's AMI
+      SubnetId: !Ref SuSubnetId
+      SecurityGroupIds:
+        - !Ref SecurityGroupId
