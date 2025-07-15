@@ -42,7 +42,7 @@ jobs:
       #       --parameter-overrides file://params/dev-s3.json \
       #       --capabilities CAPABILITY_NAMED_IAM
   qa-approval:
-    needs: dev-deploy
+    needs: deploy-dev
     runs-on: ubuntu-latest
     environment:
       name: qa
