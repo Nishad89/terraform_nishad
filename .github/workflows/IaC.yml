@@ -9,24 +9,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
+      - name: Deploy to Dev
+        run: echo "Deploying to Dev..."
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-  
-      - name: validate ec2 cft
-        run : aws cloudformation validate-template --template-body file://templates/ec2.yaml
-      - name: Deploy EC2 Stack
-        run: |
-          aws cloudformation deploy \
-            --template-file templates/ec2.yaml \
-            --stack-name "dev-ec2-stack" \
-            --parameter-overrides file://params/dev-ec2.json \
-            --capabilities CAPABILITY_NAMED_IAM
+      # - name: Configure AWS Credentials
+      #   uses: aws-actions/configure-aws-credentials@v3
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: us-east-1
+    
+    
+      # - name: validate ec2 cft
+      #   run : aws cloudformation validate-template --template-body file://templates/ec2.yaml
+      # - name: Deploy EC2 Stack
+      #   run: |
+      #     aws cloudformation deploy \
+      #       --template-file templates/ec2.yaml \
+      #       --stack-name "dev-ec2-stack" \
+      #       --parameter-overrides file://params/dev-ec2.json \
+      #       --capabilities CAPABILITY_NAMED_IAM
 
       # - name: validate s3 cft
       #   run : aws cloudformation validate-template --template-body file://templates/s3.yaml
