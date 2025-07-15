@@ -5,7 +5,7 @@ on:
      - Iac-cft-githubaction
      
 jobs:
-  deploy-ec2:
+  deploy-dev:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,9 +16,11 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      - name: validate cft
-        run : aws cloudformation validate-template --template-body file://templates/ec2.yaml
 
+  
+      - name: validate ec2 cft
+        run : aws cloudformation validate-template --template-body file://templates/ec2.yaml
+      - name: validate S3 cft
       - name: Deploy EC2 Stack
         run: |
           aws cloudformation deploy \
@@ -27,26 +29,19 @@ jobs:
             --parameter-overrides file://params/dev-ec2.json \
             --capabilities CAPABILITY_NAMED_IAM
 
-  # deploy-s3:
-  #   runs-on: ubuntu-latest
-  #   needs: deploy-ec2
-  #   steps:
-  #     - uses: actions/checkout@v3
-
-  #     # - name: Set environment variables
-  #     #   run: echo "ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
-
-  #     - name: Configure AWS Credentials
-  #       uses: aws-actions/configure-aws-credentials@v3
-  #       with:
-  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         aws-region: ap-south-1
-
-  #     - name: Deploy S3 Stack
-  #       run: |
-  #         aws cloudformation deploy \
-  #           --template-file templates/s3.yaml \
-  #           --stack-name "dev-s3-stack" \
-  #           --parameter-overrides file://params/dev-s3.json \
-  #           --capabilities CAPABILITY_NAMED_IAM
+      # - name: validate s3 cft
+      #   run : aws cloudformation validate-template --template-body file://templates/s3.yaml
+      # - name: validate S3 cft
+      # - name: Deploy S3 Stack
+      #   run: |
+      #     aws cloudformation deploy \
+      #       --template-file templates/s3.yaml \
+      #       --stack-name "dev-s3-stack" \
+      #       --parameter-overrides file://params/dev-s3.json \
+      #       --capabilities CAPABILITY_NAMED_IAM
+  qa-approval:
+    needs: dev-deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: qa
+ 
