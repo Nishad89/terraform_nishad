@@ -21,8 +21,8 @@ jobs:
         run: |
           aws cloudformation deploy \
             --template-file templates/ec2.yaml \
-            --stack-name "${ENV}-ec2-stack" \
-            --parameter-overrides file://params/${EnvName}-ec2.json \
+            --stack-name "dev-ec2-stack" \
+            --parameter-overrides file://params/dev-ec2.json \
             --capabilities CAPABILITY_NAMED_IAM
 
   # deploy-s3:
