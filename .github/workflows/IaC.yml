@@ -6,10 +6,13 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'dev or qa'
+        description: 'Select environment to deploy (dev or qa)'
         required: true
         default: dev
-
+        type: choice
+        options:
+          - dev
+          - qa
 jobs:
   deploy-ec2:
     runs-on: ubuntu-latest
