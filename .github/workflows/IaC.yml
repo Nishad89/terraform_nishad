@@ -3,16 +3,6 @@ on:
   push:
     branches: 
      - Iac-cft-githubaction
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: "Select environment"
-        required: true
-        default: dev
-        type: choice
-        options:
-          - dev
-          - qa
      
 jobs:
   deploy-ec2:
@@ -20,18 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set ENV variable based on trigger
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
-          else
-            BRANCH_NAME="${{ github.ref_name }}"
-            if [[ "$BRANCH_NAME" == *qa* ]]; then
-              echo "ENV=qa" >> $GITHUB_ENV
-            else
-              echo "ENV=dev" >> $GITHUB_ENV
-            fi
-          fi
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -41,11 +19,10 @@ jobs:
 
       - name: Deploy EC2 Stack
         run: |
-          echo "ENV is: $ENV"
           aws cloudformation deploy \
             --template-file templates/ec2.yaml \
             --stack-name "${ENV}-ec2-stack" \
-            --parameter-overrides file://params/${ENV}-ec2.json \
+            --parameter-overrides file://params/${EnvName}-ec2.json \
             --capabilities CAPABILITY_NAMED_IAM
 
   # deploy-s3:
