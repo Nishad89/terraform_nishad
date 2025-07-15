@@ -45,7 +45,10 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: qa
-
+    steps: 
+      - uses: actions/checkout@v3    
+      - name: qa-approval
+        run: echo "approval..."
   deploy-qa:
     runs-on: ubuntu-latest
     steps:
