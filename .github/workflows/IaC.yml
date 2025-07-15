@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
       - name: Deploy to Dev
         run: echo "Deploying to Dev..."
 
@@ -51,6 +50,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3    
-    steps:
       - name: Deploy to QA
         run: echo "Deploying to QA..."
