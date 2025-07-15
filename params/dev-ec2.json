@@ -4,6 +4,6 @@
   { "ParameterKey": "VpcId", "ParameterValue": "vpc-0a83358ee1760146e" },
   { "ParameterKey": "SubnetId", "ParameterValue": "subnet-0700f4195d7c50a39" },
   { "ParameterKey": "SecurityGroupId", "ParameterValue": "sg-0540ee6461ecf6622" },
-  { "ParameterKey": "InstanceType", "ParameterValue": "t3.micro" },
+  { "ParameterKey": "InstanceType", "ParameterValue": "t3.small" },
   { "ParameterKey": "ImageId", "ParameterValue": "ami-0150ccaf51ab55a51" }
 ]
