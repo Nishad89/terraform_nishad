@@ -20,7 +20,6 @@ jobs:
   
       - name: validate ec2 cft
         run : aws cloudformation validate-template --template-body file://templates/ec2.yaml
-      - name: validate S3 cft
       - name: Deploy EC2 Stack
         run: |
           aws cloudformation deploy \
@@ -39,9 +38,9 @@ jobs:
       #       --stack-name "dev-s3-stack" \
       #       --parameter-overrides file://params/dev-s3.json \
       #       --capabilities CAPABILITY_NAMED_IAM
-  # qa-approval:
-  #   needs: dev-deploy
-  #   runs-on: ubuntu-latest
-  #   environment:
-  #     name: qa
+  qa-approval:
+    needs: dev-deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: qa
  
