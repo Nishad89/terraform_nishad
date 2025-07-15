@@ -3,15 +3,18 @@ on:
   push:
     branches: 
      - Iac-cft-githubaction
+
+     
 jobs:
   deploy-ec2:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      # - name: Set environment variables
-      #   run: echo "ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
-
+      - name: Set environment variables
+        run: ENV="${{ github.event.inputs.environment || 'dev' }}"
+             echo "ENV=$ENV" >> $GITHUB_ENV
+      
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
