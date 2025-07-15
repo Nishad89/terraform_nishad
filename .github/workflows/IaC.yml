@@ -3,36 +3,20 @@ on:
   push:
     branches: 
      - Iac-cft-githubaction
-
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Select environment"
+        required: true
+        default: dev
+        type: choice
+        options:
+          - dev
+          - qa
      
 jobs:
   deploy-ec2:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set environment variables
-        run: ENV="${{ github.event.inputs.environment || 'dev' }}"
-             echo "ENV=$ENV" >> $GITHUB_ENV
-      
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Deploy EC2 Stack
-        run: |
-          aws cloudformation deploy \
-            --template-file templates/ec2.yaml \
-            --stack-name "dev-ec2-stack" \
-            --parameter-overrides file://params/dev-ec2.json \
-            --capabilities CAPABILITY_NAMED_IAM
-
-  deploy-s3:
-    runs-on: ubuntu-latest
-    needs: deploy-ec2
     steps:
       - uses: actions/checkout@v3
 
@@ -44,12 +28,37 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
+          aws-region: us-east-1
 
-      - name: Deploy S3 Stack
+      - name: Deploy EC2 Stack
         run: |
+          echo "ENV is: $ENV"
           aws cloudformation deploy \
-            --template-file templates/s3.yaml \
-            --stack-name "dev-s3-stack" \
-            --parameter-overrides file://params/dev-s3.json \
+            --template-file templates/ec2.yaml \
+            --stack-name "${ENV}-ec2-stack" \
+            --parameter-overrides file://params/${ENV}-ec2.json \
             --capabilities CAPABILITY_NAMED_IAM
+
+  # deploy-s3:
+  #   runs-on: ubuntu-latest
+  #   needs: deploy-ec2
+  #   steps:
+  #     - uses: actions/checkout@v3
+
+  #     # - name: Set environment variables
+  #     #   run: echo "ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+
+  #     - name: Configure AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v3
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: ap-south-1
+
+  #     - name: Deploy S3 Stack
+  #       run: |
+  #         aws cloudformation deploy \
+  #           --template-file templates/s3.yaml \
+  #           --stack-name "dev-s3-stack" \
+  #           --parameter-overrides file://params/dev-s3.json \
+  #           --capabilities CAPABILITY_NAMED_IAM
