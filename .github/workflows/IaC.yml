@@ -1,5 +1,8 @@
 name: IaC
 on:
+  push:
+    branches: 
+     - Iac-cft-githubaction
   workflow_dispatch:
     inputs:
       environment:
