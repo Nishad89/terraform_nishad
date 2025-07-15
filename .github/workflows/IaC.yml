@@ -39,9 +39,9 @@ jobs:
       #       --stack-name "dev-s3-stack" \
       #       --parameter-overrides file://params/dev-s3.json \
       #       --capabilities CAPABILITY_NAMED_IAM
-  qa-approval:
-    needs: dev-deploy
-    runs-on: ubuntu-latest
-    environment:
-      name: qa
+  # qa-approval:
+  #   needs: dev-deploy
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: qa
  
