@@ -16,14 +16,16 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
+      - name: validate cft
+        run : aws cloudformation validate-template --template-body file://templates/ec2.yaml
 
-      - name: Deploy EC2 Stack
-        run: |
-          aws cloudformation deploy \
-            --template-file templates/ec2.yaml \
-            --stack-name "dev-ec2-stack" \
-            --parameter-overrides file://params/dev-ec2.json \
-            --capabilities CAPABILITY_NAMED_IAM
+      # - name: Deploy EC2 Stack
+      #   run: |
+      #     aws cloudformation deploy \
+      #       --template-file templates/ec2.yaml \
+      #       --stack-name "dev-ec2-stack" \
+      #       --parameter-overrides file://params/dev-ec2.json \
+      #       --capabilities CAPABILITY_NAMED_IAM
 
   # deploy-s3:
   #   runs-on: ubuntu-latest
