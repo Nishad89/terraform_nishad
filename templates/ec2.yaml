@@ -25,6 +25,6 @@ Resources:
       InstanceType: !Ref InstanceType
       KeyName: !Ref KeyName
       ImageId: !Ref ImageId # Replace with your region's AMI
-      SubnetId: !Ref SuSubnetId
+      SubnetId: !Ref SubnetId
       SecurityGroupIds:
         - !Ref SecurityGroupId
