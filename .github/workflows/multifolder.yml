@@ -21,7 +21,7 @@ jobs:
 
       # Step 3: Test Folder1 (Node.js App)
       - name: Test Folder 1
-        working-directory: ./folder-1
+        working-directory: folder-1
         run: |
           echo "Running test for Folder 1"
           node index.js  # This will print "Hello from Folder 1!" to the logs
@@ -29,7 +29,7 @@ jobs:
 
       # Step 4: Test Folder2 (Node.js App)
       - name: Test Folder 2
-        working-directory: ./folder-2
+        working-directory: folder-2
         run: |
           echo "Running test for Folder 2"
           node index.js  # This will print "Hello from Folder 2!" to the logs
@@ -37,7 +37,7 @@ jobs:
 
       # Step 5: Test Folder3 (Static HTML)
       - name: Test Folder 3 
-        working-directory: ./folder-3
+        working-directory: folder-3
         run: |
           echo "Running test for Folder 3"
           node index.js  # This will print "Hello from Folder 2!" to the logs
