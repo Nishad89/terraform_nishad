@@ -28,22 +28,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Check if folder-1 has changes
+      - name: Check if folder1 has changes
         id: check_folder1
         run: |
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder-1' || echo "folder-1 unchanged"
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder1' || echo "folder1 unchanged"
           echo "::set-output name=changed::$(if [ $? -eq 0 ]; then echo 'true'; else echo 'false'; fi)"
 
-      - name: Check if folder-2 has changes
+      - name: Check if folder2 has changes
         id: check_folder2
         run: |
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder-2' || echo "folder-2 unchanged"
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder2' || echo "folder2 unchanged"
           echo "::set-output name=changed::$(if [ $? -eq 0 ]; then echo 'true'; else echo 'false'; fi)"
 
-      - name: Check if folder-3 has changes
+      - name: Check if folder3 has changes
         id: check_folder3
         run: |
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder-3' || echo "folder-3 unchanged"
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder3' || echo "folder3 unchanged"
           echo "::set-output name=changed::$(if [ $? -eq 0 ]; then echo 'true'; else echo 'false'; fi)"
 
   test_folder1:
@@ -56,7 +56,7 @@ jobs:
       - name: Run tests for Folder 1
         run: |
           echo "Testing Folder 1"
-          node folder-1/index.js
+          node folder1/index.js
 
   test_folder2:
     needs: check_changes
@@ -68,7 +68,7 @@ jobs:
       - name: Run tests for Folder 2
         run: |
           echo "Testing Folder 2"
-          node folder-2/index.js
+          node folder2/index.js
 
   test_folder3:
     needs: check_changes
@@ -80,5 +80,5 @@ jobs:
       - name: Run tests for Folder 3
         run: |
           echo "Testing Folder 3"
-          node folder-3/index.js
+          node folder3/index.js
       
