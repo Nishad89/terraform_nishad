@@ -5,7 +5,7 @@ on:
      - Multi_folder
      
 jobs:
-  test:
+  Test:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,20 +17,51 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'  # Use a specific Node.js version, adjust as needed
-  test_folder1:
+          node-version: '14'
+  check_changes:
     runs-on: ubuntu-latest
-    if: ${{ contains(github.event.head_commit.message, 'folder1') }}  # Run if folder-1 is modified
+    outputs:
+      folder1_changed: ${{ steps.check_folder1.outputs.changed }}
+      folder2_changed: ${{ steps.check_folder2.outputs.changed }}
+      folder3_changed: ${{ steps.check_folder3.outputs.changed }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Check if folder-1 has changes
+        id: check_folder1
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder-1' || echo "folder-1 unchanged"
+          echo "::set-output name=changed::$(if [ $? -eq 0 ]; then echo 'true'; else echo 'false'; fi)"
+
+      - name: Check if folder-2 has changes
+        id: check_folder2
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder-2' || echo "folder-2 unchanged"
+          echo "::set-output name=changed::$(if [ $? -eq 0 ]; then echo 'true'; else echo 'false'; fi)"
+
+      - name: Check if folder-3 has changes
+        id: check_folder3
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder-3' || echo "folder-3 unchanged"
+          echo "::set-output name=changed::$(if [ $? -eq 0 ]; then echo 'true'; else echo 'false'; fi)"
+
+  test_folder1:
+    needs: check_changes
+    runs-on: ubuntu-latest
+    if: ${{ needs.check_changes.outputs.folder1_changed == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run tests for Folder 1
         run: |
           echo "Testing Folder 1"
-          node folder-1/index.js   
+          node folder-1/index.js
+
   test_folder2:
+    needs: check_changes
     runs-on: ubuntu-latest
-    if: ${{ contains(github.event.head_commit.message, 'folder2') }}  # Run if folder-2 is modified
+    if: ${{ needs.check_changes.outputs.folder2_changed == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -40,12 +71,14 @@ jobs:
           node folder-2/index.js
 
   test_folder3:
+    needs: check_changes
     runs-on: ubuntu-latest
-    if: ${{ contains(github.event.head_commit.message, 'folder3') }}  # Run if folder-3 is modified
+    if: ${{ needs.check_changes.outputs.folder3_changed == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run tests for Folder 3
         run: |
           echo "Testing Folder 3"
-          node folder-3/index.js        
+          node folder-3/index.js
+      
