@@ -19,7 +19,9 @@ jobs:
         with:
           node-version: '14'  # Use a specific Node.js version, adjust as needed
       - name: List Directory Contents
-        run: pwd
+        run: |
+           pwd
+           ls -al
       # # Step 3: Test Folder1 (Node.js App)
       # - name: Test Folder 1
       #   working-directory: ./folder-1
