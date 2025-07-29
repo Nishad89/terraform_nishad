@@ -91,7 +91,7 @@ jobs:
       - name: Run tests for Folder 2
         run: |
           echo "Testing Folder 2"
-          node folder2/index.js
+          node folder2/folder4/index.js
 
   test_folder3:
     needs: check_changes
