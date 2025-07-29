@@ -3,17 +3,17 @@ on:
   push:
     branches: 
      - Multi_folder
-     
+
 jobs:
   Test:
     runs-on: ubuntu-latest
-
     steps:
-      # Step 2: Set up Node.js for running JS files
+      # Step 1: Set up Node.js for running JS files
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14'
+
   check_changes:
     runs-on: ubuntu-latest
     outputs:
@@ -24,7 +24,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+        with:
+          fetch-depth: 2  # Fetch the last two commits for diff checking
+      
       # Check if folder1 has changes
       - name: Check if folder1 has changes
         id: check_folder1
@@ -33,10 +35,10 @@ jobs:
           CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder1/' || echo "")
           if [ -z "$CHANGES" ]; then
             echo "No changes in folder1"
-            echo "::set-output name=changed::false"
+            echo "folder1_changed=false" >> $GITHUB_ENV
           else
             echo "Changes found in folder1"
-            echo "::set-output name=changed::true"
+            echo "folder1_changed=true" >> $GITHUB_ENV
           fi
 
       # Check if folder2 has changes
@@ -47,10 +49,10 @@ jobs:
           CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder2/' || echo "")
           if [ -z "$CHANGES" ]; then
             echo "No changes in folder2"
-            echo "::set-output name=changed::false"
+            echo "folder2_changed=false" >> $GITHUB_ENV
           else
             echo "Changes found in folder2"
-            echo "::set-output name=changed::true"
+            echo "folder2_changed=true" >> $GITHUB_ENV
           fi
 
       # Check if folder3 has changes
@@ -61,16 +63,16 @@ jobs:
           CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder3/' || echo "")
           if [ -z "$CHANGES" ]; then
             echo "No changes in folder3"
-            echo "::set-output name=changed::false"
+            echo "folder3_changed=false" >> $GITHUB_ENV
           else
             echo "Changes found in folder3"
-            echo "::set-output name=changed::true"
+            echo "folder3_changed=true" >> $GITHUB_ENV
           fi
 
   test_folder1:
     needs: check_changes
     runs-on: ubuntu-latest
-    if: ${{ needs.check_changes.outputs.folder1_changed == 'true' }}
+    if: ${{ env.folder1_changed == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -82,7 +84,7 @@ jobs:
   test_folder2:
     needs: check_changes
     runs-on: ubuntu-latest
-    if: ${{ needs.check_changes.outputs.folder2_changed == 'true' }}
+    if: ${{ env.folder2_changed == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -94,7 +96,7 @@ jobs:
   test_folder3:
     needs: check_changes
     runs-on: ubuntu-latest
-    if: ${{ needs.check_changes.outputs.folder3_changed == 'true' }}
+    if: ${{ env.folder3_changed == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -102,4 +104,3 @@ jobs:
         run: |
           echo "Testing Folder 3"
           node folder3/index.js
-      
