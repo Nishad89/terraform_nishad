@@ -46,7 +46,7 @@ jobs:
         id: check_folder2
         run: |
           echo "Checking if folder2 has changes..."
-          CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder2/' || echo "")
+          CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder2/folder4' || echo "")
           if [ -z "$CHANGES" ]; then
             echo "No changes in folder2"
             echo "::set-output name=changed::false"
