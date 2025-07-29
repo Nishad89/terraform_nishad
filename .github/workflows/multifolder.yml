@@ -35,10 +35,10 @@ jobs:
           CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder1/' || echo "")
           if [ -z "$CHANGES" ]; then
             echo "No changes in folder1"
-            echo "folder1_changed=false" >> $GITHUB_ENV
+            echo "::set-output name=changed::false"
           else
             echo "Changes found in folder1"
-            echo "folder1_changed=true" >> $GITHUB_ENV
+            echo "::set-output name=changed::true"
           fi
 
       # Check if folder2 has changes
@@ -49,10 +49,10 @@ jobs:
           CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder2/' || echo "")
           if [ -z "$CHANGES" ]; then
             echo "No changes in folder2"
-            echo "folder2_changed=false" >> $GITHUB_ENV
+            echo "::set-output name=changed::false"
           else
             echo "Changes found in folder2"
-            echo "folder2_changed=true" >> $GITHUB_ENV
+            echo "::set-output name=changed::true"
           fi
 
       # Check if folder3 has changes
@@ -63,16 +63,16 @@ jobs:
           CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder3/' || echo "")
           if [ -z "$CHANGES" ]; then
             echo "No changes in folder3"
-            echo "folder3_changed=false" >> $GITHUB_ENV
+            echo "::set-output name=changed::false"
           else
             echo "Changes found in folder3"
-            echo "folder3_changed=true" >> $GITHUB_ENV
+            echo "::set-output name=changed::true"
           fi
 
   test_folder1:
     needs: check_changes
     runs-on: ubuntu-latest
-    if: ${{ env.folder1_changed == 'true' }}
+    if: ${{ needs.check_changes.outputs.folder1_changed == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -84,7 +84,7 @@ jobs:
   test_folder2:
     needs: check_changes
     runs-on: ubuntu-latest
-    if: ${{ env.folder2_changed == 'true' }}
+    if: ${{ needs.check_changes.outputs.folder2_changed == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -96,7 +96,7 @@ jobs:
   test_folder3:
     needs: check_changes
     runs-on: ubuntu-latest
-    if: ${{ env.folder3_changed == 'true' }}
+    if: ${{ needs.check_changes.outputs.folder3_changed == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
