@@ -1,3 +1,1 @@
-test
-test
-this test 
+Protected tags have been deprecated
