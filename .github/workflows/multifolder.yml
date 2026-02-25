@@ -5,97 +5,35 @@ on:
      - Test
 
 jobs:
-  Test:
-    runs-on: ubuntu-latest
-    steps:
-      # Step 1: Set up Node.js for running JS files
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-
-  check_changes:
+  detect_changes:
     runs-on: ubuntu-latest
     outputs:
-      Folder1_changed: ${{ steps.check_Folder1.outputs.changed }}
-      Folder2_changed: ${{ steps.check_Folder2.outputs.changed }}
-      Folder3_Test3_changed: ${{ steps.check_Folder3_Test3.outputs.changed }}
-      Folder3_Test4_changed: ${{ steps.check_Folder3_Test4.outputs.changed }}
+      folder1: ${{ steps.filter.outputs.folder1 }}
+      folder2: ${{ steps.filter.outputs.folder2 }}
+      folder3_test3: ${{ steps.filter.outputs.folder3_test3 }}
+      folder3_test4: ${{ steps.filter.outputs.folder3_test4 }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Detect changed folders
+        id: filter
+        uses: dorny/paths-filter@v3
         with:
-          fetch-depth: 0
-
-      - name: Resolve diff range
-        id: diff_range
-        run: |
-          BEFORE="${{ github.event.before }}"
-          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
-            BEFORE=$(git rev-parse HEAD~1 2>/dev/null || git hash-object -t tree /dev/null)
-          fi
-          echo "before=$BEFORE" >> "$GITHUB_OUTPUT"
-          echo "after=${{ github.sha }}" >> "$GITHUB_OUTPUT"
-      
-      # Check if folder1 has changes
-      - name: Check if folder1 has changes
-        id: check_Folder1
-        run: |
-          echo "Checking if folder1 has changes..."
-          CHANGES=$(git diff --name-only "${{ steps.diff_range.outputs.before }}" "${{ steps.diff_range.outputs.after }}" | grep '^Folder1/' || echo "")
-          if [ -z "$CHANGES" ]; then
-            echo "No changes in folder1"
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "Changes found in folder1"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      # Check if folder2 has changes
-      - name: Check if folder2 has changes
-        id: check_Folder2
-        run: |
-          echo "Checking if folder2 has changes..."
-          CHANGES=$(git diff --name-only "${{ steps.diff_range.outputs.before }}" "${{ steps.diff_range.outputs.after }}" | grep '^Folder2/' || echo "")
-          if [ -z "$CHANGES" ]; then
-            echo "No changes in folder2"
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "Changes found in folder2"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      # Check if Folder3/Test3 has changes
-      - name: Check if Folder3/Test3 has changes
-        id: check_Folder3_Test3
-        run: |
-          echo "Checking if Folder3/Test3 has changes..."
-          CHANGES=$(git diff --name-only "${{ steps.diff_range.outputs.before }}" "${{ steps.diff_range.outputs.after }}" | grep '^Folder3/Test3/' || echo "")
-          if [ -z "$CHANGES" ]; then
-            echo "No changes in Folder3/Test3"
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "Changes found in Folder3/Test3"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      # Check if Folder3/Test4 has changes
-      - name: Check if Folder3/Test4 has changes
-        id: check_Folder3_Test4
-        run: |
-          echo "Checking if Folder3/Test4 has changes..."
-          CHANGES=$(git diff --name-only "${{ steps.diff_range.outputs.before }}" "${{ steps.diff_range.outputs.after }}" | grep '^Folder3/Test4/' || echo "")
-          if [ -z "$CHANGES" ]; then
-            echo "No changes in Folder3/Test4"
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "Changes found in Folder3/Test4"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
+          filters: |
+            folder1:
+              - 'Folder1/**'
+            folder2:
+              - 'Folder2/**'
+            folder3_test3:
+              - 'Folder3/Test3/**'
+            folder3_test4:
+              - 'Folder3/Test4/**'
 
   test_folder1:
-    needs: check_changes
+    needs: detect_changes
     runs-on: ubuntu-latest
-    if: ${{ needs.check_changes.outputs.Folder1_changed == 'true' }}
+    if: ${{ needs.detect_changes.outputs.folder1 == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -104,9 +42,9 @@ jobs:
           echo "Testing Folder 1"
 
   test_folder2:
-    needs: check_changes
+    needs: detect_changes
     runs-on: ubuntu-latest
-    if: ${{ needs.check_changes.outputs.Folder2_changed == 'true' }}
+    if: ${{ needs.detect_changes.outputs.folder2 == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -115,9 +53,9 @@ jobs:
           echo "Testing Folder 2"
 
   test_folder3_test3:
-    needs: check_changes
+    needs: detect_changes
     runs-on: ubuntu-latest
-    if: ${{ needs.check_changes.outputs.Folder3_Test3_changed == 'true' }}
+    if: ${{ needs.detect_changes.outputs.folder3_test3 == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -126,9 +64,9 @@ jobs:
           echo "Testing Folder3/Test3"
 
   test_folder3_test4:
-    needs: check_changes
+    needs: detect_changes
     runs-on: ubuntu-latest
-    if: ${{ needs.check_changes.outputs.Folder3_Test4_changed == 'true' }}
+    if: ${{ needs.detect_changes.outputs.folder3_test4 == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
