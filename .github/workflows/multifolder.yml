@@ -23,20 +23,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          fetch-depth: 2  # Fetch the last two commits for diff checking
+          fetch-depth: 0
+
+      - name: Resolve diff range
+        id: diff_range
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            BEFORE=$(git rev-parse HEAD~1 2>/dev/null || git hash-object -t tree /dev/null)
+          fi
+          echo "before=$BEFORE" >> "$GITHUB_OUTPUT"
+          echo "after=${{ github.sha }}" >> "$GITHUB_OUTPUT"
       
       # Check if folder1 has changes
       - name: Check if folder1 has changes
         id: check_Folder1
         run: |
           echo "Checking if folder1 has changes..."
-          CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^Folder1/' || echo "")
+          CHANGES=$(git diff --name-only "${{ steps.diff_range.outputs.before }}" "${{ steps.diff_range.outputs.after }}" | grep '^Folder1/' || echo "")
           if [ -z "$CHANGES" ]; then
             echo "No changes in folder1"
-            echo "::set-output name=changed::false"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "Changes found in folder1"
-            echo "::set-output name=changed::true"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
       # Check if folder2 has changes
@@ -44,13 +54,13 @@ jobs:
         id: check_Folder2
         run: |
           echo "Checking if folder2 has changes..."
-          CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^Folder2/Folder4' || echo "")
+          CHANGES=$(git diff --name-only "${{ steps.diff_range.outputs.before }}" "${{ steps.diff_range.outputs.after }}" | grep '^Folder2/' || echo "")
           if [ -z "$CHANGES" ]; then
             echo "No changes in folder2"
-            echo "::set-output name=changed::false"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "Changes found in folder2"
-            echo "::set-output name=changed::true"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
       # Check if folder3 has changes
@@ -58,13 +68,13 @@ jobs:
         id: check_Folder3
         run: |
           echo "Checking if folder3 has changes..."
-          CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^Folder3/' || echo "")
+          CHANGES=$(git diff --name-only "${{ steps.diff_range.outputs.before }}" "${{ steps.diff_range.outputs.after }}" | grep '^Folder3/' || echo "")
           if [ -z "$CHANGES" ]; then
             echo "No changes in folder3"
-            echo "::set-output name=changed::false"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "Changes found in folder3"
-            echo "::set-output name=changed::true"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
   test_folder1:
