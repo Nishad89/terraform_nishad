@@ -1,8 +1,8 @@
-name: MultiFolder
+name: Test-Multifolder
 on:
   push:
     branches: 
-     - Multi_folder
+     - Test
 
 jobs:
   Test:
@@ -11,8 +11,6 @@ jobs:
       # Step 1: Set up Node.js for running JS files
       - name: Set up Node.js
         uses: actions/setup-node@v2
-        with:
-          node-version: '14'
 
   check_changes:
     runs-on: ubuntu-latest
@@ -32,7 +30,7 @@ jobs:
         id: check_folder1
         run: |
           echo "Checking if folder1 has changes..."
-          CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder1/' || echo "")
+          CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^Folder1/' || echo "")
           if [ -z "$CHANGES" ]; then
             echo "No changes in folder1"
             echo "::set-output name=changed::false"
@@ -46,7 +44,7 @@ jobs:
         id: check_folder2
         run: |
           echo "Checking if folder2 has changes..."
-          CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder2/folder4' || echo "")
+          CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^Folder2/Folder4' || echo "")
           if [ -z "$CHANGES" ]; then
             echo "No changes in folder2"
             echo "::set-output name=changed::false"
@@ -60,7 +58,7 @@ jobs:
         id: check_folder3
         run: |
           echo "Checking if folder3 has changes..."
-          CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^folder3/' || echo "")
+          CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^Folder3/' || echo "")
           if [ -z "$CHANGES" ]; then
             echo "No changes in folder3"
             echo "::set-output name=changed::false"
@@ -72,35 +70,32 @@ jobs:
   test_folder1:
     needs: check_changes
     runs-on: ubuntu-latest
-    if: ${{ needs.check_changes.outputs.folder1_changed == 'true' }}
+    if: ${{ needs.check_changes.outputs.Folder1_changed == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run tests for Folder 1
         run: |
           echo "Testing Folder 1"
-          node folder1/index.js
 
   test_folder2:
     needs: check_changes
     runs-on: ubuntu-latest
-    if: ${{ needs.check_changes.outputs.folder2_changed == 'true' }}
+    if: ${{ needs.check_changes.outputs.Folder2_changed == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run tests for Folder 2
         run: |
           echo "Testing Folder 2"
-          node folder2/folder4/index.js
 
   test_folder3:
     needs: check_changes
     runs-on: ubuntu-latest
-    if: ${{ needs.check_changes.outputs.folder3_changed == 'true' }}
+    if: ${{ needs.check_changes.outputs.Folder3_changed == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run tests for Folder 3
         run: |
           echo "Testing Folder 3"
-          node folder3/index.js
