@@ -15,9 +15,9 @@ jobs:
   check_changes:
     runs-on: ubuntu-latest
     outputs:
-      folder1_changed: ${{ steps.check_folder1.outputs.changed }}
-      folder2_changed: ${{ steps.check_folder2.outputs.changed }}
-      folder3_changed: ${{ steps.check_folder3.outputs.changed }}
+      Folder1_changed: ${{ steps.check_Folder1.outputs.changed }}
+      Folder2_changed: ${{ steps.check_Folder2.outputs.changed }}
+      Folder3_changed: ${{ steps.check_Folder3.outputs.changed }}
 
     steps:
       - name: Checkout code
@@ -27,7 +27,7 @@ jobs:
       
       # Check if folder1 has changes
       - name: Check if folder1 has changes
-        id: check_folder1
+        id: check_Folder1
         run: |
           echo "Checking if folder1 has changes..."
           CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^Folder1/' || echo "")
@@ -41,7 +41,7 @@ jobs:
 
       # Check if folder2 has changes
       - name: Check if folder2 has changes
-        id: check_folder2
+        id: check_Folder2
         run: |
           echo "Checking if folder2 has changes..."
           CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^Folder2/Folder4' || echo "")
@@ -55,7 +55,7 @@ jobs:
 
       # Check if folder3 has changes
       - name: Check if folder3 has changes
-        id: check_folder3
+        id: check_Folder3
         run: |
           echo "Checking if folder3 has changes..."
           CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^Folder3/' || echo "")
