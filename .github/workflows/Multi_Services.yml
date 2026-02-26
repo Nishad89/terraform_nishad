@@ -26,6 +26,8 @@ jobs:
           base: ${{ github.event.before }}
           ref: ${{ github.sha }}
           filters: |
+            folder1:
+              - 'Folder1/**'
             folder2:
               - 'Folder2/**'
             folder3_test3:
