@@ -36,14 +36,9 @@ jobs:
 
   test_folder1:
     needs: detect_changes
-    runs-on: ubuntu-latest
     if: ${{ needs.detect_changes.outputs.folder1 == 'true' }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run tests for Folder 1
-        run: |
-          echo "Testing Folder 1"
+    uses: ./.github/workflows/ci_service_1.yml
+    secrets: inherit
 
   test_folder2:
     needs: detect_changes
