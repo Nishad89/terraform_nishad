@@ -1,0 +1,12 @@
+name: ci_services2
+
+on:
+  workflow_call:
+
+jobs:
+  ci_service_2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print welcome message
+        run: echo "welcome Nishad2"
+

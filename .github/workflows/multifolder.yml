@@ -42,26 +42,15 @@ jobs:
 
   test_folder2:
     needs: detect_changes
-    runs-on: ubuntu-latest
     if: ${{ needs.detect_changes.outputs.folder2 == 'true' }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run tests for Folder 2
-        run: |
-          echo "Testing Folder 2"
+    uses: ./.github/workflows/ci_service_2.yml
+    secrets: inherit
 
   test_folder3_test3:
     needs: detect_changes
-    runs-on: ubuntu-latest
     if: ${{ needs.detect_changes.outputs.folder3_test3 == 'true' }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run tests for Folder3/Test3
-        run: |
-          echo "Testing Folder3/Test3"
-
+    uses: ./.github/workflows/ci_service_3.yml
+    secrets: inherit
   test_folder3_test4:
     needs: detect_changes
     runs-on: ubuntu-latest
