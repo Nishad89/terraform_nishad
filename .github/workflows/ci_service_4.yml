@@ -1,0 +1,13 @@
+name: ci_services4
+
+on:
+  workflow_call:
+
+jobs:
+  ci_service_3:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print welcome message
+        run: echo "welcome Nishad4"
+
+
