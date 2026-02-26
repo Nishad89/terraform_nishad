@@ -4,13 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  ci_service_1:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print welcome message
-        run: echo "welcome Nishad1"
-
-  cd_service_1:
+  Docker_Build_Push_service_1:
     runs-on: ubuntu-latest
     steps:
       - name: Print welcome message
