@@ -61,10 +61,10 @@ jobs:
     secrets: inherit
 
   ECS-Deploy-Dev:
-     Name: Deploy to Dev
-     needs: [test_folder1, test_folder2, test_folder3_test3, test_folder3_test4]
-     if: ${{ needs.test_folder1.result == 'success' || needs.test_folder2.result == 'success' || needs.test_folder3_test3.result == 'success' || needs.test_folder3_test4.result == 'success' }}
-      Runs-on: ubuntu-latest
-      Steps:
-        - name: Deploy to Dev
-          run: echo "Deploying to Dev environment"
+    name: Deploy to Dev
+    needs: [test_folder1, test_folder2, test_folder3_test3, test_folder3_test4]
+    if: ${{ needs.test_folder1.result == 'success' || needs.test_folder2.result == 'success' || needs.test_folder3_test3.result == 'success' || needs.test_folder3_test4.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Dev
+        run: echo "Deploying to Dev environment"
