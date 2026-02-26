@@ -45,10 +45,10 @@ jobs:
             services=$(jq --arg n "$name" --arg p "$path" '. + [{service_name:$n,service_path:$p}]' <<< "$services")
           }
 
-          [[ "${{ steps.filter.outputs.folder1 }}" == "true" ]] && add_service "Service 1" "Folder1"
-          [[ "${{ steps.filter.outputs.folder2 }}" == "true" ]] && add_service "Service 2" "Folder2"
-          [[ "${{ steps.filter.outputs.folder3_test3 }}" == "true" ]] && add_service "Service 3" "Folder3/Test3"
-          [[ "${{ steps.filter.outputs.folder3_test4 }}" == "true" ]] && add_service "Service 4" "Folder3/Test4"
+          [[ "${{ steps.filter.outputs.folder1 }}" == "true" ]] && add_service "Service_1" "Folder1"
+          [[ "${{ steps.filter.outputs.folder2 }}" == "true" ]] && add_service "Service_2" "Folder2"
+          [[ "${{ steps.filter.outputs.folder3_test3 }}" == "true" ]] && add_service "Service_3" "Folder3/Test3"
+          [[ "${{ steps.filter.outputs.folder3_test4 }}" == "true" ]] && add_service "Service_4" "Folder3/Test4"
 
           echo "services=$services" >> "$GITHUB_OUTPUT"
           if [[ "$services" == "[]" ]]; then
