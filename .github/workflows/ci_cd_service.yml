@@ -3,6 +3,10 @@ name: CI-CD Service
 on:
   workflow_call:
     inputs:
+      service_name:
+        required: false
+        type: string
+        default: service_1
       service_path:
         required: true
         type: string
@@ -13,7 +17,7 @@ on:
 
 jobs:
   ci:
-    name: CI - service_1
+    name: CI - ${{ inputs.service_name }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -24,11 +28,10 @@ jobs:
 
       - name: Run CI
         run: |
-          echo "Running CI for service_1 in ${{ inputs.service_path }}"
-          # put real CI commands here
+          echo "Running CI for ${{ inputs.service_name }} in ${{ inputs.service_path }}"
 
   cd:
-    name: CD - service_1
+    name: CD - ${{ inputs.service_name }}
     needs: ci
     if: ${{ needs.ci.result == 'success' }}
     runs-on: ubuntu-latest
@@ -38,5 +41,4 @@ jobs:
 
       - name: Run CD
         run: |
-          echo "Deploying service_1 from ${{ inputs.service_path }} to ${{ inputs.environment }}"
-          # put real CD commands here
+          echo "Deploying ${{ inputs.service_name }} from ${{ inputs.service_path }} to ${{ inputs.environment }}"
