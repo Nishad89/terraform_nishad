@@ -1,0 +1,13 @@
+name: cd_services4
+
+on:
+  workflow_call:
+
+jobs:
+  Deploy_service_4:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print welcome message
+        run: echo "welcome Nishad4"
+
+
