@@ -10,3 +10,8 @@ jobs:
       - name: Print welcome message
         run: echo "welcome Nishad1"
 
+  cd_service_1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print welcome message
+        run: echo "welcome Nishad1"
