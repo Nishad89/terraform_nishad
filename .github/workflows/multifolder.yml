@@ -64,11 +64,6 @@ jobs:
     name: Deploy to Dev
     needs: [detect_changes, cd_service_1, cd_service_2, cd_service_3, cd_service_4]
     if: ${{ always() && (needs.detect_changes.outputs.folder1 == 'true' || needs.detect_changes.outputs.folder2 == 'true' || needs.detect_changes.outputs.folder3_test3 == 'true' || needs.detect_changes.outputs.folder3_test4 == 'true') && (needs.detect_changes.outputs.folder1 != 'true' || needs.cd_service_1.result == 'success') && (needs.detect_changes.outputs.folder2 != 'true' || needs.cd_service_2.result == 'success') && (needs.detect_changes.outputs.folder3_test3 != 'true' || needs.cd_service_3.result == 'success') && (needs.detect_changes.outputs.folder3_test4 != 'true' || needs.cd_service_4.result == 'success') }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to Dev
-        run: echo "Deploying to Dev environment"
-
   cd_service_1:
     name: CD Service 1
     needs: test_folder1
