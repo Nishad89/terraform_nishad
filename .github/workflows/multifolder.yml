@@ -59,3 +59,12 @@ jobs:
     if: ${{ needs.detect_changes.outputs.folder3_test4 == 'true' }}
     uses: ./.github/workflows/ci_service_4.yml
     secrets: inherit
+
+  ECS-Deploy-Dev:
+     Name: Deploy to Dev
+     needs: [test_folder1, test_folder2, test_folder3_test3, test_folder3_test4]
+     if: ${{ needs.test_folder1.result == 'success' || needs.test_folder2.result == 'success' || needs.test_folder3_test3.result == 'success' || needs.test_folder3_test4.result == 'success' }}
+      Runs-on: ubuntu-latest
+      Steps:
+        - name: Deploy to Dev
+          run: echo "Deploying to Dev environment"
