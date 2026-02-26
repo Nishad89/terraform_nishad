@@ -3,7 +3,7 @@ name: Multi Services CI/CD
 on:
   push:
     branches:
-      - Test
+      - Nishad
 
 jobs:
   detect_changes:
