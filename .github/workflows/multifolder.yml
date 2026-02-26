@@ -1,8 +1,6 @@
 name: Test-Multifolder
 on:
-  push:
-    branches: 
-     - Test
+  workflow_dispatch:
 
 jobs:
   detect_changes:
@@ -35,27 +33,27 @@ jobs:
               - 'Folder3/Test4/**'
 
   test_folder1:
-    name: CI Service 1
+    name: Service 1
     needs: detect_changes
     if: ${{ needs.detect_changes.outputs.folder1 == 'true' }}
     uses: ./.github/workflows/ci_service_1.yml
     secrets: inherit
 
   test_folder2:
-    name: CI Service 2
+    name: Service 2
     needs: detect_changes
     if: ${{ needs.detect_changes.outputs.folder2 == 'true' }}
     uses: ./.github/workflows/ci_service_2.yml
     secrets: inherit
 
   test_folder3_test3:
-    name: CI Service 3
+    name: Service 3
     needs: detect_changes
     if: ${{ needs.detect_changes.outputs.folder3_test3 == 'true' }}
     uses: ./.github/workflows/ci_service_3.yml
     secrets: inherit
   test_folder3_test4:
-    name: CI Service 4
+    name: Service 4
     needs: detect_changes
     if: ${{ needs.detect_changes.outputs.folder3_test4 == 'true' }}
     uses: ./.github/workflows/ci_service_4.yml

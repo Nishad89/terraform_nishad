@@ -1,0 +1,14 @@
+name: Service4-Caller
+
+on:
+  push:
+    branches:
+      - Test
+    paths:
+      - 'Folder3/Test4/**'
+
+jobs:
+  call_ci_service_4:
+    name: ci_service_4
+    uses: ./.github/workflows/ci_service_4.yml
+    secrets: inherit
