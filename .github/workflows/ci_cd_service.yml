@@ -1,0 +1,45 @@
+name: CI-CD Service
+
+on:
+  workflow_call:
+    inputs:
+      service_name:
+        required: true
+        type: string
+      service_path:
+        required: true
+        type: string
+      environment:
+        required: false
+        type: string
+        default: dev
+
+jobs:
+  ci:
+    name: CI - ${{ inputs.service_name }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.service_path }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run CI
+        run: |
+          echo "Running CI for ${{ inputs.service_name }} in ${{ inputs.service_path }}"
+          # put real CI commands here
+
+  cd:
+    name: CD - ${{ inputs.service_name }}
+    needs: ci
+    if: ${{ needs.ci.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run CD
+        run: |
+          echo "Deploying ${{ inputs.service_name }} from ${{ inputs.service_path }} to ${{ inputs.environment }}"
+          # put real CD commands here

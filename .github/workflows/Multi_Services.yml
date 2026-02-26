@@ -1,0 +1,73 @@
+name: Multi Services CI/CD
+
+on:
+  push:
+    branches:
+      - Test
+
+jobs:
+  detect_changes:
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.build_matrix.outputs.services }}
+      has_changes: ${{ steps.build_matrix.outputs.has_changes }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed folders
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          base: ${{ github.event.before }}
+          ref: ${{ github.sha }}
+          filters: |
+            folder1:
+              - 'Folder1/**'
+            folder2:
+              - 'Folder2/**'
+            folder3_test3:
+              - 'Folder3/Test3/**'
+            folder3_test4:
+              - 'Folder3/Test4/**'
+
+      - name: Build matrix
+        id: build_matrix
+        shell: bash
+        run: |
+          services='[]'
+
+          add_service () {
+            local name="$1"
+            local path="$2"
+            services=$(jq --arg n "$name" --arg p "$path" '. + [{service_name:$n,service_path:$p}]' <<< "$services")
+          }
+
+          [[ "${{ steps.filter.outputs.folder1 }}" == "true" ]] && add_service "Service 1" "Folder1"
+          [[ "${{ steps.filter.outputs.folder2 }}" == "true" ]] && add_service "Service 2" "Folder2"
+          [[ "${{ steps.filter.outputs.folder3_test3 }}" == "true" ]] && add_service "Service 3" "Folder3/Test3"
+          [[ "${{ steps.filter.outputs.folder3_test4 }}" == "true" ]] && add_service "Service 4" "Folder3/Test4"
+
+          echo "services=$services" >> "$GITHUB_OUTPUT"
+          if [[ "$services" == "[]" ]]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  service_ci_cd:
+    name: CI/CD (${{ matrix.service.service_name }})
+    needs: detect_changes
+    if: ${{ needs.detect_changes.outputs.has_changes == 'true' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        service: ${{ fromJSON(needs.detect_changes.outputs.services) }}
+    uses: ./.github/workflows/ci_cd_service.yml
+    with:
+      service_name: ${{ matrix.service.service_name }}
+      service_path: ${{ matrix.service.service_path }}
+      environment: dev
+    secrets: inherit
