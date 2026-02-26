@@ -3,7 +3,7 @@ name: Multi Services
 on:
   push:
     branches:
-      - Test
+      - Nishad
 
 jobs:
   detect_changes:
