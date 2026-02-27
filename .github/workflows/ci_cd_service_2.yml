@@ -14,7 +14,7 @@ on:
 
 jobs:
   ci:
-    name: CI - service_2
+    name: Build - service_2
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -27,7 +27,7 @@ jobs:
         run: echo "Running CI for service_2 in ${{ inputs.service_path }}"
 
   cd:
-    name: CD - service_2
+    name: Deploy - service_2
     needs: ci
     if: ${{ needs.ci.result == 'success' }}
     runs-on: ubuntu-latest
