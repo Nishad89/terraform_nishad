@@ -35,7 +35,7 @@ jobs:
             folder3_test4:
               - 'Folder3/Test4/**'
   service_1_ci_cd:
-    name: My_app1
+    name: My_app
     needs: detect_changes
     if: ${{ needs.detect_changes.outputs.folder1 == 'true' }}
     uses: ./.github/workflows/ci_cd_service_1.yml
@@ -45,7 +45,7 @@ jobs:
     secrets: inherit  
 
   service_2_ci_cd:
-    name: My_app2
+    name: My_app
     needs: detect_changes
     if: ${{ needs.detect_changes.outputs.folder2 == 'true' }}
     uses: ./.github/workflows/ci_cd_service_2.yml
@@ -55,7 +55,7 @@ jobs:
     secrets: inherit
 
   service_3_ci_cd:
-    name: My_app3
+    name: My_app
     needs: detect_changes
     if: ${{ needs.detect_changes.outputs.folder3_test3 == 'true' }}
     uses: ./.github/workflows/ci_cd_service_3.yml
@@ -65,7 +65,7 @@ jobs:
     secrets: inherit
 
   service_4_ci_cd:
-    name: My_app4
+    name: My_app
     needs: detect_changes
     if: ${{ needs.detect_changes.outputs.folder3_test4 == 'true' }}
     uses: ./.github/workflows/ci_cd_service_4.yml
