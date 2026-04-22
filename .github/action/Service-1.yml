@@ -1,14 +1,12 @@
-name: Backend CI/CD
-
+name: Batman
 on:
   workflow_call:
     inputs:
       service-config:
         type: string
         required: false
-
 jobs:
-  build-and-deploy:
+  build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

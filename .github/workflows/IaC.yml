@@ -4,16 +4,9 @@ on:
     branches: 
      - Reusable
 jobs:
-  deploy-dev:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Deploy to Dev
-        run: echo "Deploying to Dev..."
-
   Service-1: 
     name: Service-1
-    uses: ./.github/workflowsService-1.yml
+    uses: ./.github/workflows/action/Service-1.yml
   service-2:
     name: Service-2
-    uses: ./.github/workflows/Service-2.yml
+    uses: ./.github/workflows/action/Service-2.yml
