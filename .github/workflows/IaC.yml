@@ -10,7 +10,7 @@ jobs:
   # service-2:
   #   name: Service-2
   #   uses: ./.github/workflows/Service-2.yml
-  new service:
+  newservice:
     name: New Service
     runs-on: ubuntu-latest
     steps:
