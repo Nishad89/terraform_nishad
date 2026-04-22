@@ -1,9 +1,8 @@
-name: IaC
+name: Nishad
 on:
   push:
     branches: 
-     - Iac-cft-githubaction
-     
+     - Reusable
 jobs:
   deploy-dev:
     runs-on: ubuntu-latest
@@ -12,46 +11,9 @@ jobs:
       - name: Deploy to Dev
         run: echo "Deploying to Dev..."
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-    
-    
-      - name: validate ec2 cft
-        run : aws cloudformation validate-template --template-body file://templates/ec2.yaml
-      - name: Deploy EC2 Stack
-        run: |
-          aws cloudformation deploy \
-            --template-file templates/ec2.yaml \
-            --stack-name "dev-ec2-stack" \
-            --parameter-overrides file://params/dev-ec2.json \
-            --capabilities CAPABILITY_NAMED_IAM
-
-      # - name: validate s3 cft
-      #   run : aws cloudformation validate-template --template-body file://templates/s3.yaml
-      # - name: validate S3 cft
-      # - name: Deploy S3 Stack
-      #   run: |
-      #     aws cloudformation deploy \
-      #       --template-file templates/s3.yaml \
-      #       --stack-name "dev-s3-stack" \
-      #       --parameter-overrides file://params/dev-s3.json \
-      #       --capabilities CAPABILITY_NAMED_IAM
-  # qa-approval:
-  #   needs: deploy-dev
-  #   runs-on: ubuntu-latest
-  #   environment:
-  #     name: qa
-  #   steps: 
-  #     - uses: actions/checkout@v3    
-  #     - name: qa-approval
-  #       run: echo "approval..."
-  # deploy-qa:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3    
-  #     - name: Deploy to QA
-  #       run: echo "Deploying to QA..."
+  Service-1: 
+    name: Service-1
+    uses: ./.github/workflowsService-1.yml
+  service-2:
+    name: Service-2
+    uses: ./.github/workflows/Service-2.yml
