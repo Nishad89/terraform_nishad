@@ -1,4 +1,4 @@
-
+name: Service-2
 on:
   workflow_call:
     inputs:
