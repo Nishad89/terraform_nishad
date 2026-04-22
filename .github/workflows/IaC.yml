@@ -4,9 +4,16 @@ on:
     branches:
       - Reusable
 jobs:
-  Service-1:
-    name: Service-1
-    uses: ./.github/workflows/Service-1.yml
-  service-2:
-    name: Service-2
-    uses: ./.github/workflows/Service-2.yml
+  # Service-1:
+  #   name: Service-1
+  #   uses: ./.github/workflows/Service-1.yml
+  # service-2:
+  #   name: Service-2
+  #   uses: ./.github/workflows/Service-2.yml
+  new service:
+    name: New Service
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and Deploy New Service
+        run: echo "Building and Deploying New Service"
