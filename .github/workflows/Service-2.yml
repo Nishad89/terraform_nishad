@@ -1,0 +1,16 @@
+name: Backend CI/CD
+
+on:
+  workflow_call:
+    inputs:
+      service-config:
+        type: string
+        required: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and Deploy Service-1
+        run: echo "Building and Deploying Service-1"
