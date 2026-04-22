@@ -1,0 +1,16 @@
+name: Spiderman
+
+on:
+  workflow_call:
+    inputs:
+      service-config:
+        type: string
+        required: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and Deploy Service-2
+        run: echo "Building and Deploying Service-2"

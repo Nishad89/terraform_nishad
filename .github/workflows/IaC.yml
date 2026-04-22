@@ -1,12 +1,12 @@
 name: Nishad
 on:
   push:
-    branches: 
-     - Reusable
+    branches:
+      - Reusable
 jobs:
-  Service-1: 
+  Service-1:
     name: Service-1
-    uses: ./.github/workflows/action/Service-1.yml
+    uses: ./.github/workflows/Service-1.yml
   service-2:
     name: Service-2
-    uses: ./.github/workflows/action/Service-2.yml
+    uses: ./.github/workflows/Service-2.yml
